@@ -6,9 +6,6 @@ project(bpfd)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
-find_package(ZLIB REQUIRED)
-find_package(LibElf REQUIRED)
-
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_STANDARD 11)
 
@@ -19,7 +16,15 @@ IF(CMAKE_CROSSCOMPILING)
 	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -static")
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static")
 	set(lib_type STATIC)
+	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O2 -s")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2 -s")
+	set(LIBELF_LIBRARIES elf)
+	set(ZLIB_LIBRARIES z)
+	include_directories(/home/share/elf-lib-arm/output/include)
+	link_directories(/home/share/elf-lib-arm/output/lib)
 ELSE()
+	find_package(ZLIB REQUIRED)
+	find_package(LibElf REQUIRED)
 	set(lib_type SHARED)
 ENDIF()
 
